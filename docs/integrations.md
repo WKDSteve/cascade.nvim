@@ -4,7 +4,7 @@
 
 `cascade.o`/`cascade.O` already continue a list bullet below/above the
 cursor; when the current line isn't a list item but a
-[markdown.nvim](https://github.com/StefanBartl/markdown.nvim) GFM table row,
+[markdown.nvim](https://github.com/WKDSteve/markdown.nvim) GFM table row,
 they fall back to `markdown.core.table_mode.insert_row` instead of a bare
 native open — the table analogue of the same gesture. No dependency
 declaration, no config: cascade `pcall(require(...))`s the module, so the

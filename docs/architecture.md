@@ -102,7 +102,7 @@ two parsers. See [`FEATURES/SEQUENCE.md`](FEATURES/SEQUENCE.md).
 
 ## The lib.nvim boundary
 
-[`lib.nvim`](https://github.com/StefanBartl/lib.nvim) is cascade's one
+[`lib.nvim`](https://github.com/WKDSteve/lib.nvim) is cascade's one
 **required** dependency, and the boundary is deliberately narrow:
 
 | Used for | Hard or soft |

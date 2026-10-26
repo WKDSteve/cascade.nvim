@@ -35,7 +35,7 @@ function M.check()
   if pcall(require, "lib.nvim.bindings.usercmd.composer") then
     ok("lib.nvim detected (:Cascade command layer + lib.notify/lib.augroup available)")
   else
-    err("lib.nvim not found — :Cascade will fail to load", { 'Install "StefanBartl/lib.nvim"' })
+    err("lib.nvim not found — :Cascade will fail to load", { 'Install "WKDSteve/lib.nvim"' })
   end
 
   local cfg_ok, config = pcall(require, "cascade.config")

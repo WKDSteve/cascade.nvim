@@ -17,10 +17,10 @@
 [![Neovim](https://img.shields.io/badge/Neovim-0.9%2B-57A143?logo=neovim&logoColor=white)](https://neovim.io)
 [![Lua](https://img.shields.io/badge/Lua-5.1%2FLuaJIT-2C2D72?logo=lua&logoColor=white)](https://www.lua.org)
 ![Status](https://img.shields.io/badge/status-beta-orange)
-[![CI](https://github.com/StefanBartl/cascade.nvim/actions/workflows/ci.yml/badge.svg)](https://github.com/StefanBartl/cascade.nvim/actions/workflows/ci.yml)
-[![wkd](https://img.shields.io/badge/wkd-family-c6ff3d)](https://stefanbartl.github.io/wkd/p/cascade/)
+[![CI](https://github.com/WKDSteve/cascade.nvim/actions/workflows/ci.yml/badge.svg)](https://github.com/WKDSteve/cascade.nvim/actions/workflows/ci.yml)
+[![wkd](https://img.shields.io/badge/wkd-family-c6ff3d)](https://wkdsteve.github.io/wkd/p/cascade/)
 
-> Part of the [wkd](https://stefanbartl.github.io/wkd/) family — see this plugin's [page](https://stefanbartl.github.io/wkd/p/cascade/) on the site.
+> Part of the [wkd](https://wkdsteve.github.io/wkd/) family — see this plugin's [page](https://wkdsteve.github.io/wkd/p/cascade/) on the site.
 
 One plugin, one pattern: **detect the context under the cursor → advance it one
 step → otherwise fall back to native behavior.** That holds for Markdown lists
@@ -32,11 +32,11 @@ looking at" question.
 
 ## Around it
 
-> **[markdown.nvim](https://github.com/StefanBartl/markdown.nvim)** — renders and
+> **[markdown.nvim](https://github.com/WKDSteve/markdown.nvim)** — renders and
 > structures the document (TOC, folding, tables) while cascade edits the list
 > content inside it. One reads the file, the other rewrites lines in it.
 >
-> **[emojis.nvim](https://github.com/StefanBartl/emojis.nvim)** — has a direct
+> **[emojis.nvim](https://github.com/WKDSteve/emojis.nvim)** — has a direct
 > bridge: `require("emojis").cascade_groups()` feeds its emoji checkbox glyphs
 > into `cycle.groups`, so `:Emojis toggle` (line-scoped) and cascade's `<C-y>`
 > (cursor-scoped) drive one shared vocabulary.
@@ -71,7 +71,7 @@ each page answers.
 - [Integrations](docs/integrations.md) — the optional context-menu bridge, and why cycle/sequence/transpose are left out of it.
 - [Health check](docs/health.md) — what `:checkhealth cascade` reports, line by line.
 - [Contributing](docs/CONTRIBUTING.md) — ground rules and project layout.
-- [Feedback](https://github.com/StefanBartl/cascade.nvim/issues) — bugs, features, usage questions; broader discussion fits the [discussions board](https://github.com/StefanBartl/cascade.nvim/discussions).
+- [Feedback](https://github.com/WKDSteve/cascade.nvim/issues) — bugs, features, usage questions; broader discussion fits the [discussions board](https://github.com/WKDSteve/cascade.nvim/discussions).
 
 `:help cascade` is the same reference inside the editor.
 

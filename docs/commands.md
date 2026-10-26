@@ -1,7 +1,7 @@
 # Command reference
 
 cascade registers exactly **one** user command, `:Cascade <subcommand>`, built
-via [`lib.nvim.bindings.usercmd.composer`](https://github.com/StefanBartl/lib.nvim)
+via [`lib.nvim.bindings.usercmd.composer`](https://github.com/WKDSteve/lib.nvim)
 with `<Tab>` completion. It is defined by `setup()` regardless of
 `keymaps.preset`.
 

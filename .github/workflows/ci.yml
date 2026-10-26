@@ -64,7 +64,7 @@ jobs:
       # matches the local dev convention documented in TESTS/README.md.
       - uses: actions/checkout@v5
         with:
-          repository: StefanBartl/lib.nvim
+          repository: WKDSteve/lib.nvim
           path: lib.nvim
           ref: ci-verified
       # ui.nvim: cycle_spec.lua's word_cycle.pick test drives
@@ -72,7 +72,7 @@ jobs:
       # same sibling-checkout treatment as lib.nvim above.
       - uses: actions/checkout@v5
         with:
-          repository: StefanBartl/ui.nvim
+          repository: WKDSteve/ui.nvim
           path: ui.nvim
           ref: ci-verified
       - uses: rhysd/action-setup-vim@v1
@@ -82,7 +82,7 @@ jobs:
       # Checked out from the branch that only moves once the dependency's own CI is green.
       - uses: actions/checkout@v5
         with:
-          repository: "StefanBartl/testing.nvim"
+          repository: "WKDSteve/testing.nvim"
           path: testing.nvim
           ref: ci-verified
       - name: Run TESTS suite

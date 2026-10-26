@@ -1,7 +1,7 @@
 # Contributing to cascade.nvim
 
 Thank you for your interest! Bugs, ideas and questions are welcome in the
-[issue tracker](https://github.com/StefanBartl/cascade.nvim/issues); pull
+[issue tracker](https://github.com/WKDSteve/cascade.nvim/issues); pull
 requests very welcome.
 
 ## Getting the repository into a session
@@ -63,7 +63,7 @@ require("cascade").setup({ keymaps = { preset = true } })
 `TESTS/` is **not** a plenary.nvim/busted suite — it never was. It is a
 framework-free harness: every spec is a file returning `function(H) … end`,
 `H` carries three assertions (`eq`, `eq_lines`, `ok`) plus two buffer helpers,
-and [testing.nvim](https://github.com/StefanBartl/testing.nvim) discovers and runs
+and [testing.nvim](https://github.com/WKDSteve/testing.nvim) discovers and runs
 every `*_spec.lua` (configuration: `.testing.lua`, dialect `h`). A new spec needs
 no registration.
 

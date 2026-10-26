@@ -6,7 +6,7 @@ manager. The README carries the lazy.nvim spec only — everything else is here.
 ## Requirements
 
 - **Neovim 0.9+**
-- **[lib.nvim](https://github.com/StefanBartl/lib.nvim)** — a *required*
+- **[lib.nvim](https://github.com/WKDSteve/lib.nvim)** — a *required*
   dependency, not a soft one.
 
 `lib.nvim` is required because the `:Cascade` command layer is built on
@@ -20,7 +20,7 @@ looking for a bug in cascade.
 Nothing else is needed. Treesitter is optional and off by default — see
 `lists.precision` in [`configuration.md`](configuration.md#lists).
 
-[ui.nvim](https://github.com/StefanBartl/ui.nvim) is optional too: it backs
+[ui.nvim](https://github.com/WKDSteve/ui.nvim) is optional too: it backs
 `cycle.pick`'s themed chooser (`ui.kit.select`, itself falling back to any
 `vim.ui.select` override) and `cascade.integrations.menu`'s right-click
 entries (`ui.contextmenu`, an opt-in module a host requires explicitly).
@@ -49,8 +49,8 @@ outside those filetypes — the plugin has not been loaded yet.
 
 ```lua
 {
-  "StefanBartl/cascade.nvim",
-  dependencies = { "StefanBartl/lib.nvim" },
+  "WKDSteve/cascade.nvim",
+  dependencies = { "WKDSteve/lib.nvim" },
   event = "VeryLazy",
   opts = {
     keymaps = { preset = true },
@@ -62,8 +62,8 @@ outside those filetypes — the plugin has not been loaded yet.
 
 ```lua
 {
-  "StefanBartl/cascade.nvim",
-  dependencies = { "StefanBartl/lib.nvim" },
+  "WKDSteve/cascade.nvim",
+  dependencies = { "WKDSteve/lib.nvim" },
   ft = { "markdown", "markdown.mdx", "text", "tex", "norg" },
   opts = {
     keymaps = { preset = true },
@@ -75,8 +75,8 @@ outside those filetypes — the plugin has not been loaded yet.
 
 ```lua
 use({
-  "StefanBartl/cascade.nvim",
-  requires = { "StefanBartl/lib.nvim" },
+  "WKDSteve/cascade.nvim",
+  requires = { "WKDSteve/lib.nvim" },
   config = function()
     require("cascade").setup({ keymaps = { preset = true } })
   end,
@@ -86,8 +86,8 @@ use({
 ## vim-plug
 
 ```vim
-Plug 'StefanBartl/lib.nvim'
-Plug 'StefanBartl/cascade.nvim'
+Plug 'WKDSteve/lib.nvim'
+Plug 'WKDSteve/cascade.nvim'
 ```
 
 ```lua
