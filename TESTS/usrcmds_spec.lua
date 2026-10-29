@@ -217,25 +217,16 @@ return function(H)
     local groups = cfg.get("cycle").groups
     eq_lines(groups[#groups], { "TODO", "IN PROGRESS", "DONE" }, ":Cascade cycle add: the whole tail is taken, spaces and all")
 
-    -- BUG (the mirror of the line above): `cycle remove`'s route reads only
-    -- `ctx.args.value` and, unlike `cycle add`, never appends `ctx.rest` -- so
-    -- a value containing a space arrives truncated at the first token and
-    -- matches nothing. A group added as "TODO,IN PROGRESS,DONE" therefore
-    -- cannot be removed by the member that made `cycle add` need the tail in
-    -- the first place.
-    --
-    -- Pinned rather than fixed: the repair is the same three lines `cycle add`
-    -- already carries, but it makes a command that currently reports "no group
-    -- contains ..." start succeeding.
-    local truncated = ex_quiet("Cascade cycle remove IN PROGRESS")
-    eq(#cfg.get("cycle").groups, 2, "BUG: :Cascade cycle remove drops everything after the first word")
-    ok(
-      table.concat(truncated, "\n"):find("no group contains", 1, true) ~= nil,
-      "BUG: ... and reports the truncated value as unknown"
-    )
+    -- The mirror for `cycle remove`: a member containing a space arrives
+    -- whole, so the group added above is removed by `IN PROGRESS` itself
+    -- (formerly truncated to `IN` and reported as "no group contains").
+    local removed = table.concat(ex_quiet("Cascade cycle remove IN PROGRESS"), "\n")
+    eq(#cfg.get("cycle").groups, 1, ":Cascade cycle remove: a member with a space removes its group")
+    ok(removed:find("no group contains", 1, true) == nil, ":Cascade cycle remove: the spaced value is not reported as unknown")
+    eq_lines(cfg.get("cycle").groups[1], { "on", "off" }, ":Cascade cycle remove: only the matching group goes")
 
-    -- A single-word member of the same group does remove it, which is the
-    -- workaround and the proof that only the argument handling is at fault.
+    -- A single-word member still removes its group.
+    ex_quiet("Cascade cycle add TODO,IN PROGRESS,DONE")
     ex_quiet("Cascade cycle remove TODO")
     eq(#cfg.get("cycle").groups, 1, ":Cascade cycle remove: a single-word member removes the group")
 

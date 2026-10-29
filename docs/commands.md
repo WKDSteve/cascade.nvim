@@ -121,10 +121,12 @@ listed — `:checkhealth cascade` reports those, with their collisions.
 ### `:Cascade cycle remove {value}`
 
 Drops the first group containing the value you name, so any member of a group
-identifies it:
+identifies it. As with `add`, the whole tail is taken, so a member with a
+space works too:
 
 ```vim
 :Cascade cycle remove beta
+:Cascade cycle remove IN PROGRESS
 ```
 
 ## Strings domain

@@ -15,6 +15,21 @@ local composer = require("lib.nvim.bindings.usercmd.composer")
 
 local M = {}
 
+--- The typed STRING argument `name` plus every token after it, joined by one
+--- space. A cycle value may contain spaces (`TODO,IN PROGRESS,DONE`); the
+--- composer splits on whitespace, so the first token alone would silently drop
+--- everything after the first space.
+---@param ctx table composer route context (`args`, `rest`)
+---@param name string argument name
+---@return string
+local function tail_of(ctx, name)
+  local tail = ctx.args[name]
+  if ctx.rest and #ctx.rest > 0 then
+    tail = tail .. " " .. table.concat(ctx.rest, " ")
+  end
+  return tail
+end
+
 --- Create the :Cascade verb (range-aware; works in normal and visual mode).
 ---@return nil
 function M.setup()
@@ -41,14 +56,8 @@ function M.setup()
         },
         desc = "Add a cycle group at runtime: :Cascade cycle add on,off,maybe",
         run = function(ctx)
-          -- The whole tail, not just `ctx.args.values`: a group may contain
-          -- spaces (`:Cascade cycle add TODO,IN PROGRESS,DONE`), and taking
-          -- only the first token would silently drop everything after one.
-          local tail = ctx.args.values
-          if ctx.rest and #ctx.rest > 0 then
-            tail = tail .. " " .. table.concat(ctx.rest, " ")
-          end
-          api.cycle_group_add(tail)
+          -- The whole tail (`:Cascade cycle add TODO,IN PROGRESS,DONE`).
+          api.cycle_group_add(tail_of(ctx, "values"))
         end,
       },
       {
@@ -58,7 +67,9 @@ function M.setup()
         },
         desc = "Remove the runtime cycle group containing a value",
         run = function(ctx)
-          api.cycle_group_remove(ctx.args.value)
+          -- The whole tail too, the mirror of `cycle add`: a member such as
+          -- `IN PROGRESS` must arrive intact (`:Cascade cycle remove IN PROGRESS`).
+          api.cycle_group_remove(tail_of(ctx, "value"))
         end,
       },
       {

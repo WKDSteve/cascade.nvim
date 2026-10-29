@@ -43,6 +43,7 @@ ten minutes, you simply wouldn't.
 keypress, so it takes effect immediately. Values may contain spaces — the
 whole tail is taken, not just the first token, since otherwise
 `TODO,IN PROGRESS,DONE` would silently lose everything after the space.
+`remove` takes the whole tail the same way (`:Cascade cycle remove IN PROGRESS`).
 
 Values are trimmed, and duplicates inside one group are dropped — a repeated
 value would stall the cycle on itself. If fewer than two distinct values
