@@ -49,7 +49,8 @@ Values are trimmed, and duplicates inside one group are dropped — a repeated
 value would stall the cycle on itself. If fewer than two distinct values
 remain, the group is refused: a cycle of one cannot cycle.
 
-`remove` drops the first group containing the value you name, so any member
+`remove` drops the last group containing the value you name (the newest, so it
+undoes your latest `add` before it touches a configured group), so any member
 identifies it. `list` reports the global groups *and* the current filetype's,
 since those are separate config keys and reading either alone answers the
 wrong question.

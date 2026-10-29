@@ -645,7 +645,11 @@ function M.cycle_group_add(raw)
   return true
 end
 
---- Remove the first runtime cycle group containing `value`.
+--- Remove the last cycle group containing `value`.
+---
+--- The LAST match, not the first: `cycle_group_add` appends, so the group added
+--- most recently is the one that goes, and `cycle add ==,===` followed by
+--- `cycle remove ==` undoes the add instead of dropping a configured group.
 ---@param value string
 ---@return boolean removed
 function M.cycle_group_remove(value)

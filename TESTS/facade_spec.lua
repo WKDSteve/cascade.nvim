@@ -118,7 +118,11 @@ return function(H)
       cascade.cycle_group_remove("a")
     end)
     eq(#cfg.get("cycle").groups, 1, "cycle_group_remove: one group at a time")
-    eq_lines(cfg.get("cycle").groups[1], { "a", "b" }, "cycle_group_remove: the runtime addition goes before the configured one")
+    eq_lines(
+      cfg.get("cycle").groups[1],
+      { "a", "b" },
+      "cycle_group_remove: the configured group stays, the runtime addition is the one removed"
+    )
   end
 
   do
