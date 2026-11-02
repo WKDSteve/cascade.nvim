@@ -8,8 +8,7 @@
 --- touching the buffer. That keeps them trivially testable.
 
 local patterns = require("cascade.core.patterns")
-local roman = require("cascade.lists.roman")
-local alpha = require("cascade.lists.alpha")
+local kinds = require("cascade.lists.kinds")
 
 local M = {}
 
@@ -146,31 +145,24 @@ local function try_kind(kind, rest, opts)
     if mk then
       return { kind = "unordered", marker = mk, delim = "", checkbox = nil, text = "" }
     end
-  elseif kind == "digit" then
-    local num, d, after = rest:match("^(%d+)([%.%)])%s(.*)$")
-    if num then
-      local cb, text = split_checkbox(after, opts)
-      return { kind = "digit", marker = num, delim = d, checkbox = cb, text = text }
-    end
-    num, d = rest:match("^(%d+)([%.%)])$")
-    if num then
-      return { kind = "digit", marker = num, delim = d, checkbox = nil, text = "" }
-    end
-  elseif kind == "ascii" then
-    local ch, d, after = rest:match("^(%a)([%.%)])%s(.*)$")
-    if ch and alpha.to_int(ch) then
-      local cb, text = split_checkbox(after, opts)
-      return { kind = "ascii", marker = ch, delim = d, checkbox = cb, text = text }
-    end
-    ch, d = rest:match("^(%a)([%.%)])$")
-    if ch and alpha.to_int(ch) then
-      return { kind = "ascii", marker = ch, delim = d, checkbox = nil, text = "" }
-    end
-  elseif kind == "roman" then
-    local rm, d, after = rest:match("^(%a+)([%.%)])%s(.*)$")
-    if rm and roman.to_int(rm) then
-      local cb, text = split_checkbox(after, opts)
-      return { kind = "roman", marker = rm, delim = d, checkbox = cb, text = text }
+    return nil
+  end
+
+  -- Ordered kinds share one shape (`<token><delim> <text>`); what a token is
+  -- and whether a bare marker may stand alone comes from the kinds codec.
+  local codec = kinds.get(kind)
+  if not codec then
+    return nil
+  end
+  local tok, d, after = rest:match("^(" .. codec.token_pat .. ")([%.%)])%s(.*)$")
+  if tok and codec.to_int(tok) then
+    local cb, text = split_checkbox(after, opts)
+    return { kind = kind, marker = tok, delim = d, checkbox = cb, text = text }
+  end
+  if codec.bare then
+    tok, d = rest:match("^(" .. codec.token_pat .. ")([%.%)])$")
+    if tok and codec.to_int(tok) then
+      return { kind = kind, marker = tok, delim = d, checkbox = nil, text = "" }
     end
   end
   return nil
@@ -312,14 +304,10 @@ end
 function M.advance(m, opts)
   local n = { indent = m.indent, kind = m.kind, delim = m.delim, text = "" }
 
-  if m.kind == "digit" then
-    n.marker = tostring((tonumber(m.marker) or 0) + 1)
-  elseif m.kind == "ascii" then
-    local idx = alpha.to_int(m.marker) or 0
-    n.marker = match_case(m.marker, alpha.to_alpha(idx + 1) or m.marker)
-  elseif m.kind == "roman" then
-    local idx = roman.to_int(m.marker) or 0
-    n.marker = match_case(m.marker, roman.to_roman(idx + 1) or m.marker)
+  local codec = kinds.get(m.kind)
+  if codec then
+    local next_tok = codec.to_token((codec.to_int(m.marker) or 0) + 1) or m.marker
+    n.marker = codec.cased and match_case(m.marker, next_tok) or next_tok
   else
     n.marker = m.marker
   end

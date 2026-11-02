@@ -6,8 +6,7 @@
 --- (block/visual form rotation). A "template" is a short string like `1.`,
 --- `a)`, `I.` or `-`; a "spec" is its decoded form.
 
-local roman = require("cascade.lists.roman")
-local alpha = require("cascade.lists.alpha")
+local kinds = require("cascade.lists.kinds")
 
 local M = {}
 
@@ -56,14 +55,8 @@ end
 ---@param m CascadeMarker
 ---@return integer
 function M.value_of(m)
-  if m.kind == "digit" then
-    return tonumber(m.marker) or 1
-  elseif m.kind == "ascii" then
-    return alpha.to_int(m.marker) or 1
-  elseif m.kind == "roman" then
-    return roman.to_int(m.marker) or 1
-  end
-  return 1
+  local codec = kinds.get(m.kind)
+  return codec and codec.to_int(m.marker) or 1
 end
 
 --- Build a marker token for a target spec carrying `value`.
@@ -74,15 +67,9 @@ function M.token_for(spec, value)
   if spec.kind == "unordered" then
     return spec.bullet
   end
-  local s
-  if spec.kind == "digit" then
-    s = tostring(value)
-  elseif spec.kind == "ascii" then
-    s = alpha.to_alpha(value) or "a"
-  else
-    s = roman.to_roman(value) or "i"
-  end
-  if spec.kind ~= "digit" then
+  local codec = kinds.CODECS[spec.kind]
+  local s = codec.to_token(value) or codec.fallback
+  if codec.cased then
     s = spec.upper and s:upper() or s:lower()
   end
   return s

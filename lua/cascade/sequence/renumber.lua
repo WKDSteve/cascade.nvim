@@ -18,8 +18,7 @@
 --- testable and can walk a multi-line selection line by line while keeping one
 --- running counter.
 
-local roman = require("cascade.lists.roman")
-local alpha = require("cascade.lists.alpha")
+local kind_codecs = require("cascade.lists.kinds")
 
 local M = {}
 
@@ -38,20 +37,7 @@ M.DEFAULT_TYPES = { "digit", "ascii", "roman" }
 ---@param tok string
 ---@return integer|nil
 local function value_of(kind, tok)
-  if kind == "digit" then
-    if tok:match("^%d+$") then
-      return tonumber(tok)
-    end
-  elseif kind == "ascii" then
-    if tok:match("^%a$") then
-      return alpha.to_int(tok)
-    end
-  elseif kind == "roman" then
-    if tok:match("^%a+$") then
-      return roman.to_int(tok)
-    end
-  end
-  return nil
+  return kind_codecs.parse_token(kind, tok)
 end
 
 ---@internal
@@ -62,12 +48,13 @@ end
 ---@param ref string # the token being replaced.
 ---@return string|nil # nil when `value` is outside the kind's range.
 local function render(kind, value, ref)
-  if kind == "digit" then
-    return tostring(value)
-  end
-  local out = (kind == "ascii") and alpha.to_alpha(value) or roman.to_roman(value)
+  local codec = kind_codecs.get(kind)
+  local out = codec and codec.to_token(value)
   if not out then
     return nil
+  end
+  if not codec.cased then
+    return out
   end
   if ref == ref:upper() and ref ~= ref:lower() then
     return out:upper()

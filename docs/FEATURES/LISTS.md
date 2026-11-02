@@ -200,6 +200,7 @@ renumberer. Opt-in via `lists.types` (ambiguous with plain letters, so not
 on by default); order in `types` decides when several kinds are enabled.
 
 - **Module:** `lists/roman.lua` (`M.to_roman`, `M.to_int`), `lists/alpha.lua` (`M.to_int`, `M.to_alpha`)
+- **Module:** `lists/kinds.lua` (the per-kind codec table `digit`/`ascii`/`roman` that marker parsing, advancing, shape values and sequence renumbering share; a new ordered kind is one entry there)
 - **Config:** `lists.types` (`"ascii"`, `"roman"` opt-in alongside `"unordered"`/`"digit"`)
 
 ## Custom per-filetype markers
