@@ -162,7 +162,9 @@ function M.items(bufnr)
   local user_keys = (require("cascade.config").get("keymaps") or {}).list
   user_keys = type(user_keys) == "table" and user_keys or {}
 
-  --- The key an entry shows: what `keymaps.list` made of it, nothing for one switched off.
+  --- The key an entry shows: what `keymaps.list` made of it, nothing for one switched off. The
+  --- shapes are the ones lib.nvim's keymap registry binds: a key, a list of keys, `{ lhs = key or
+  --- list }`; an empty string binds nothing, and the first key that is bound is shown.
   ---@param id string
   ---@param default string
   ---@return string|nil
@@ -171,10 +173,18 @@ function M.items(bufnr)
     if key == nil then
       return default
     end
-    if type(key) == "table" then
-      key = key.lhs or key[1]
+    if type(key) == "table" and key.lhs ~= nil then
+      key = key.lhs
     end
-    return type(key) == "string" and key or nil
+    if type(key) == "table" then
+      for _, k in ipairs(key) do
+        if type(k) == "string" and k ~= "" then
+          return k
+        end
+      end
+      return nil
+    end
+    return type(key) == "string" and key ~= "" and key or nil
   end
 
   local api = require("cascade")
