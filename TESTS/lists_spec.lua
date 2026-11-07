@@ -36,6 +36,24 @@ return function(H)
       "1. a|2. [ ] b|3. [ ] c",
       "rotate: a selection keeps following the line above"
     )
+
+    -- …also when the list counts in letters or roman numerals: the marker's value, not its digits
+    local alpha = vim.tbl_extend("force", lopts, { forms = { "a.", "a. [ ]", "- [ ]", "-" } })
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "a. x", "b. y", "c. z" })
+    rotate(buf, 1, 2, 1, alpha)
+    eq(
+      table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), "|"),
+      "a. x|b. [ ] y|c. [ ] z",
+      "rotate: a lettered selection goes on from its first letter"
+    )
+    local roman = vim.tbl_extend("force", lopts, { forms = { "i.", "i. [ ]", "- [ ]", "-" } })
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "i. x", "ii. y", "iii. z" })
+    rotate(buf, 1, 2, 1, roman)
+    eq(
+      table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), "|"),
+      "i. x|ii. [ ] y|iii. [ ] z",
+      "rotate: a roman selection goes on from its first numeral"
+    )
   end
 
   -- form rotation: 1. -> 1. [ ] -> - [ ] -> -
