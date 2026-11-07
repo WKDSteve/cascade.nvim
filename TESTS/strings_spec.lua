@@ -177,6 +177,13 @@ return function(H)
 
     buf = buffer_with("javascript", "const s = tag`hi there`;", 17)
     eq(strings.template_string(buf), false, "js: tagged template untouched")
+    -- A line break in the quotes: the cursor sits in the ERROR child of the string.
+    buf = buffer_with("javascript", 'const s = "a', 0)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { 'const s = "a', 'b";' })
+    vim.api.nvim_win_set_cursor(0, { 2, 0 })
+    eq(strings.template_string(buf), true, "js: a string that gained a newline converts")
+    eq(table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), "\n"), "const s = `a\nb`;", "js: backticks over both lines")
+
     buf = buffer_with("javascript", 'const s = "";', 11)
     eq(strings.template_string(buf), false, "js: empty string untouched")
   else

@@ -120,6 +120,22 @@ end
 
 -- ---------------------------------------------------------------- JS/TS
 
+---@internal
+---The string around `node` when `node` sits in a syntax error inside it, else
+---`node`. A line break in a quoted string is a syntax error: the parser keeps
+---the `string` node over both lines and wraps what follows the break in an
+---`ERROR` child, and that is where the cursor is right after typing the break.
+---@param node TSNode
+---@return TSNode
+local function string_around_error(node)
+  local cur = node ---@type TSNode?
+  while cur and cur:type() ~= "ERROR" do
+    cur = cur:parent()
+  end
+  local parent = cur and cur:parent()
+  return parent and parent:type() == "string" and parent or node
+end
+
 ---Convert the JS/TS string at the cursor: `"…${x}…"` -> `` `…${x}…` ``,
 ---and a template string with no `${}` and no newline back to a plain quoted
 ---string (tagged templates are left alone).
@@ -139,6 +155,7 @@ function M.template_string(bufnr, winid)
   if not node then
     return false
   end
+  node = string_around_error(node)
   typ = node:type()
   if typ ~= "string" and typ ~= "template_string" then
     return false
