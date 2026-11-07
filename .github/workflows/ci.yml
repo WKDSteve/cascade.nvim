@@ -85,6 +85,29 @@ jobs:
           repository: "WKDSteve/testing.nvim"
           path: testing.nvim
           ref: ci-verified
+      # Tree-sitter parsers for JavaScript and Python: Neovim bundles neither, and without them the sheets
+      # cascade-strings-js / cascade-strings-python and the JS/Python blocks of TESTS/strings_spec.lua are skipped.
+      # Built from the grammars' tagged sources (v0.25.0, the release the private machine runs) into the default
+      # site directory, which is where TESTS/sheets/_helpers.lua (_G.parser) and strings_spec look. A tag, not a
+      # ci-verified branch: these are upstream grammars, their tags do not move.
+      - name: Tree-sitter parsers (javascript, python)
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            site="$USERPROFILE/AppData/Local/nvim-data/site"; cc=gcc; shared=-shared
+          elif [ "$RUNNER_OS" = "macOS" ]; then
+            site="$HOME/.local/share/nvim/site"; cc=cc; shared=-bundle
+          else
+            site="$HOME/.local/share/nvim/site"; cc=cc; shared="-shared -fPIC"
+          fi
+          mkdir -p "$site/parser"
+          for lang in javascript python; do
+            git clone --quiet --depth 1 --branch v0.25.0 "https://github.com/tree-sitter/tree-sitter-$lang" "$RUNNER_TEMP/ts-$lang"
+            # shellcheck disable=SC2086
+            "$cc" -O2 $shared -I "$RUNNER_TEMP/ts-$lang/src" "$RUNNER_TEMP/ts-$lang/src/parser.c" \
+              "$RUNNER_TEMP/ts-$lang/src/scanner.c" -o "$site/parser/$lang.so"
+          done
+          ls -l "$site/parser"
       - name: Run TESTS suite
         working-directory: cascade.nvim
         run: |
