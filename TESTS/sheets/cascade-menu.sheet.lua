@@ -3,7 +3,7 @@
 return {
   id = "cascade.menu",
   title = "cascade.nvim: the Cascade fly-out in ui.menu fires the actions; absent in .lua and with ui_menu = false",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     {
       lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()

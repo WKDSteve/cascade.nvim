@@ -3,7 +3,7 @@
 return {
   id = "cascade.precision",
   title = 'cascade.nvim: lists.precision = "treesitter" skips a fenced block; no parser falls back',
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]], note = 'first the default, "off"' },
 

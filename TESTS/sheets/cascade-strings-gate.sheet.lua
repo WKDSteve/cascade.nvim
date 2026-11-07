@@ -3,7 +3,7 @@
 return {
   id = "cascade.strings-gate",
   title = "cascade.nvim: no conversion in a .lua or Markdown file",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]] },
 

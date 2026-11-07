@@ -4,7 +4,7 @@
 return {
   id = "cascade.strings-js",
   title = "cascade.nvim: a JavaScript literal follows its contents, :Cascade strings switches it",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   requires = {
     {
       lua = [[(function()

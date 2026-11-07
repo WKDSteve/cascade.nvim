@@ -3,7 +3,7 @@
 return {
   id = "cascade.toggles",
   title = "cascade.nvim: <A-->, <A-*>, <A-0>, <A-c>, <leader>cx, with a count and a selection",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]] },
 

@@ -3,7 +3,7 @@
 return {
   id = "cascade.command",
   title = "cascade.nvim: :Cascade completes, takes levels and a range, ignores a bang it has no use for",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]] },
 

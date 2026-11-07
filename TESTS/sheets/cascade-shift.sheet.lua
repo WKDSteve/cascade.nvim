@@ -4,7 +4,7 @@
 return {
   id = "cascade.shift",
   title = "cascade.nvim: <C-y>, <C-x> on a marker, <C-S-y>, <leader>c+, letters, Roman numerals, bare markers",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]] },
 

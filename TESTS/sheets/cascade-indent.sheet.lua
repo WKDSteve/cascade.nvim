@@ -3,7 +3,7 @@
 return {
   id = "cascade.indent",
   title = "cascade.nvim: <A-Right>, <A-Left>, the count of lines against the count of levels",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]] },
 

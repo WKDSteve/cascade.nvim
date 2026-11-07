@@ -4,7 +4,7 @@
 return {
   id = "cascade.strings-python",
   title = "cascade.nvim: a Python literal follows its contents",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   requires = {
     {
       lua = [[(function()

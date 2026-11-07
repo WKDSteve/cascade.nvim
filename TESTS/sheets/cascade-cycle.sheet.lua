@@ -4,7 +4,7 @@
 return {
   id = "cascade.cycle",
   title = "cascade.nvim: <C-y>, <C-x>, +, -, <C-M-y>, <leader>cP on words, numbers, dates and operators",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]] },
 

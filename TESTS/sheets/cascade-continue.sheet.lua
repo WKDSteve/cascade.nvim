@@ -3,7 +3,7 @@
 return {
   id = "cascade.continue",
   title = "cascade.nvim: <CR>, <M-CR>, o and O continue a list, only in a list filetype",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]], note = "the options of the real config" },
 

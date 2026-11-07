@@ -3,7 +3,7 @@
 return {
   id = "cascade.features",
   title = "cascade.nvim: a switched-off feature refuses its action; :checkhealth reports the domains",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     {
       lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua")

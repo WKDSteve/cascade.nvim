@@ -3,7 +3,7 @@
 return {
   id = "cascade.move",
   title = "cascade.nvim: <A-Up> and <A-Down> move and renumber, with a count, a selection, in Insert mode",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]] },
 

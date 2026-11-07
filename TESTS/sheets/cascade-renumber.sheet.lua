@@ -4,7 +4,7 @@
 return {
   id = "cascade.renumber",
   title = "cascade.nvim: renumber on :w, <leader>cr, <leader>cR and :Cascade renumber all",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]] },
 

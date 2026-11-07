@@ -3,7 +3,7 @@
 return {
   id = "cascade.transpose",
   title = "cascade.nvim: <leader><Right>, <leader><Left>, <leader><C-Right>, <leader><C-Left>",
-  task = "cascade.nvim/testblatt-bindings-checkliste",
+  task = "cascade.nvim/manual-checklist-run",
   steps = {
     {
       lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()
