@@ -120,77 +120,6 @@ function M.augroup(name)
   return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
----@internal
---- Feed a native key sequence without remapping, to run once the current
---- mapping function returns, in front of whatever is already queued ("i").
----@param keys string
----@return nil
-local function feed(keys)
-  vim.api.nvim_feedkeys(M.keycode(keys), "ni", false)
-end
-
----@internal
---- Standalone fallback for `lib.nvim.selection.lines`.
----@return integer srow, integer erow
-local function lines_fallback()
-  local a, b = vim.fn.line("v") - 1, vim.fn.line(".") - 1
-  if a > b then
-    a, b = b, a
-  end
-  return a, b
-end
-
----@internal
---- Standalone fallback for `lib.nvim.selection.reselect_lines` (see there
---- for the full rationale: `gv` is unreliable mid-selection since its marks
---- are only set once Visual mode ends).
----@param srow integer
----@param erow integer
----@return nil
-local function reselect_lines_fallback(srow, erow)
-  feed(string.format("<Esc>%dGV%dG", srow + 1, erow + 1))
-end
-
----@internal
---- Standalone fallback for `lib.nvim.selection.chars`.
----@return integer|nil row, integer|nil scol, integer|nil ecol
-local function chars_fallback()
-  if vim.fn.mode() ~= "v" then
-    return nil
-  end
-  local row_v, col_v = vim.fn.line("v"), vim.fn.col("v")
-  local row_d, col_d = vim.fn.line("."), vim.fn.col(".")
-  if row_v ~= row_d then
-    return nil
-  end
-  local scol, ecol = col_v - 1, col_d - 1
-  if scol > ecol then
-    scol, ecol = ecol, scol
-  end
-  return row_d - 1, scol, ecol
-end
-
----@internal
---- Standalone fallback for `lib.nvim.selection.reselect_chars`.
----@param row integer
----@param scol integer
----@param ecol integer
----@return nil
-local function reselect_chars_fallback(row, scol, ecol)
-  local line = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1] or ""
-  local sc = math.max(vim.fn.charidx(line, scol), 0)
-  local ec = math.max(vim.fn.charidx(line, ecol), sc)
-  local keys = string.format("<Esc>%dG0", row + 1)
-  if sc > 0 then
-    keys = keys .. sc .. "l"
-  end
-  keys = keys .. "v"
-  if ec > sc then
-    keys = keys .. (ec - sc) .. "l"
-  end
-  feed(keys)
-end
-
 --- Classify the capitalization of a token. Uses `lib.lua.strings.case` if
 --- available, else a local fallback.
 ---@param s string
@@ -468,24 +397,20 @@ function M.dotrepeat_run(fn)
   set_vim_repeat()
 end
 
---- No bridge to `lib.nvim` for `lines`/`chars` below, by design: the closest
---- module used to be `lib.nvim.buf_win_tab.selection`, whose shape doesn't
---- match what `keep_lines`/`keep_chars` need (`get_visual_selection()`
---- returns 1-based rows/cols plus the selected text, not the 0-based bounds
---- these traffic in; `reselect_visual()` re-enters Visual via `normal! gv`,
---- exactly the unreliable-mid-selection behavior `reselect_lines_fallback`/
---- `reselect_chars_fallback` exist to avoid — see their doc comments).
---- `lib.nvim.selection` has since grown its own 0-based, explicit-bounds
---- `lines`/`chars`/`keep_lines`/`keep_chars` that match this shape exactly
---- -- but retrofitting these four onto it now would be a same-behavior
---- refactor of already-exercised code for no functional gain, so they stay
---- standalone. `chars_multiline`/`reselect_chars_multiline` below are new,
---- have no standalone history to preserve, and bridge directly.
+--- The selection accessors bridge to `lib.nvim.selection`, cascade's one
+--- required dependency: it reads the live `line("v")`/`col("v")` bounds and
+--- feeds the reselect with "ni", ahead of keys already queued (a macro, a
+--- paste), which `gv` cannot do mid-selection. Only `keep_lines`/`keep_chars`
+--- stay here, because their callbacks may return nothing.
+---@return table
+local function selection()
+  return require("lib.nvim.selection")
+end
 
 --- 0-based inclusive row range of the current Visual selection.
 ---@return integer srow, integer erow
 function M.lines()
-  return lines_fallback()
+  return selection().lines()
 end
 
 --- Restore a linewise (`V`) selection over `[srow, erow]` (0-based
@@ -494,7 +419,7 @@ end
 ---@param erow integer
 ---@return nil
 function M.reselect_lines(srow, erow)
-  reselect_lines_fallback(srow, erow)
+  selection().reselect_lines(srow, erow)
 end
 
 --- Run `fn(srow, erow)` against the current Visual selection's 0-based
@@ -514,21 +439,19 @@ end
 
 --- 0-based row and inclusive byte-column range of the current Visual
 --- selection, if (and only if) it is charwise and confined to one line.
---- (No `lib.nvim` bridge — see the note above `M.lines`.)
 ---@return integer|nil row, integer|nil scol, integer|nil ecol
 function M.chars()
-  return chars_fallback()
+  return selection().chars()
 end
 
 --- Restore a charwise (`v`) selection spanning byte columns `[scol, ecol]`
---- (0-based inclusive) on `row`. (No `lib.nvim` bridge — see the note above
---- `M.lines`.)
+--- (0-based inclusive) on `row`.
 ---@param row integer
 ---@param scol integer
 ---@param ecol integer
 ---@return nil
 function M.reselect_chars(row, scol, ecol)
-  reselect_chars_fallback(row, scol, ecol)
+  selection().reselect_chars(row, scol, ecol)
 end
 
 --- Run `fn(row, scol, ecol)` against the current same-line charwise
@@ -553,26 +476,21 @@ end
 
 --- 0-based row and inclusive byte-column bounds of the current Visual
 --- selection, if (and only if) it is charwise and spans *more than one*
---- line — the complement of `M.chars()`. Bridges directly to
---- `lib.nvim.selection.chars_multiline` (see the note above `M.lines`):
---- `lib.nvim` is cascade's one required dependency, and this is a fresh
---- surface with no standalone-fallback history to keep.
+--- line — the complement of `M.chars()`.
 ---@return integer|nil srow, integer|nil scol, integer|nil erow, integer|nil ecol
 function M.chars_multiline()
-  return require("lib.nvim.selection").chars_multiline()
+  return selection().chars_multiline()
 end
 
 --- Restore a charwise (`v`) selection from byte column `scol` on `srow`
---- through byte column `ecol` on `erow` (0-based inclusive). Bridges
---- directly to `lib.nvim.selection.reselect_chars_multiline` — see
---- `M.chars_multiline`.
+--- through byte column `ecol` on `erow` (0-based inclusive).
 ---@param srow integer
 ---@param scol integer
 ---@param erow integer
 ---@param ecol integer
 ---@return nil
 function M.reselect_chars_multiline(srow, scol, erow, ecol)
-  require("lib.nvim.selection").reselect_chars_multiline(srow, scol, erow, ecol)
+  selection().reselect_chars_multiline(srow, scol, erow, ecol)
 end
 
 return M

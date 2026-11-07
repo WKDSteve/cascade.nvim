@@ -98,6 +98,17 @@ return function(H)
 
   vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "mtx", false)
 
+  -- The reselect (lib.nvim.selection) runs before the keys queued after the mapping, as in a
+  -- macro or a `:normal`: the `y` behind <A-Right> yanks the reselected rows and leaves Visual
+  -- mode. Queued behind it, the reselect would come last and leave Visual mode on.
+  vim.api.nvim_buf_set_lines(ebuf, 0, -1, false, { "1. a", "2. b", "3. c", "4. d" })
+  vim.api.nvim_win_set_cursor(0, { 2, 0 })
+  vim.fn.setreg('"', "")
+  vim.api.nvim_feedkeys(vim.keycode("Vj<A-Right>y"), "mtx", false)
+  eq(vim.fn.mode(), "n", "the key after a visual action runs on the reselected rows, last")
+  eq(vim.fn.getreg('"'), "  1. b\n  2. c\n", "y took the two reselected, indented rows")
+  vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "mtx", false)
+
   -- cycle_char_* is the one action bound to two lhs (see docs/FEATURES/CYCLE.md):
   -- the Ctrl+Alt key AND a leader alias no terminal or keyboard layout can
   -- swallow. Both must reach the same action -- a preset that quietly bound
