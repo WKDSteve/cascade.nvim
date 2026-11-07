@@ -13,9 +13,24 @@ return function(H)
   config.setup({ strings = { features = { lua_format = true } } })
 
   -- `language.add` answers true on Neovim 0.12 even with no parser file on
-  -- the runtimepath, so the file is what is checked.
+  -- the runtimepath, so the file is what is checked. The test Neovim runs on a
+  -- throwaway NVIM_APPNAME, so the developer's own parsers are looked up where
+  -- TESTS/sheets/_helpers.lua looks (`_G.parser`); without that the JS and
+  -- Python blocks were skipped on every machine, not only on a runner.
   local function has_parser(lang)
-    return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) > 0
+    local function found()
+      return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) > 0
+    end
+    if found() then
+      return true
+    end
+    local home = vim.fs.normalize(vim.uv.os_homedir())
+    for _, site in ipairs({ home .. "/AppData/Local/nvim-data/site", home .. "/.local/share/nvim/site" }) do
+      if #vim.fn.glob(site .. "/parser/" .. lang .. ".*", true, true) > 0 then
+        vim.opt.rtp:append(site)
+      end
+    end
+    return found()
   end
 
   ---@param ft string
