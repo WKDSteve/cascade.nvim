@@ -54,11 +54,13 @@ local function ft_in(fts, ft)
 end
 
 ---@internal
---- Feed a native key without remapping.
+--- Feed a native key without remapping, in front of whatever is already queued
+--- ("i"): the keys after this one in a macro, `:normal` or a paste must see its
+--- effect, as they would if it had been typed.
 ---@param lhs string
 ---@return nil
 local function feed(lhs)
-  vim.api.nvim_feedkeys(lib.keycode(lhs), "n", false)
+  vim.api.nvim_feedkeys(lib.keycode(lhs), "ni", false)
 end
 
 ---@internal

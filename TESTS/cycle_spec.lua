@@ -16,7 +16,7 @@ return function(H)
   eq(vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1], "local x = false", "true->false")
 
   -- Facade-level: +/-, and <C-y>/<C-x>, on a writable buffer. Dot-repeatable
-  -- actions go through g@l via feedkeys(mode "n"), which is queued rather
+  -- actions go through g@l via feedkeys(mode "ni"), which is queued rather
   -- than synchronous — flush the typeahead after each call.
   cfg.setup({})
   local cascade = require("cascade")

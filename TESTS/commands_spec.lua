@@ -334,6 +334,21 @@ return function(H)
     ":Cascade renumber all sweeps every block in the buffer"
   )
 
+  -- The native fallback of a key runs before the keys queued after it, as in a
+  -- macro, a `:normal` or a paste (regression: the fallback was appended behind
+  -- them, so `ofoo<Esc>` on a prose line ran the `foo` in Normal mode first).
+  local function typed(start, keys)
+    vim.api.nvim_buf_set_lines(ebuf, 0, -1, false, start)
+    vim.api.nvim_win_set_cursor(0, { 1, 0 })
+    vim.api.nvim_feedkeys(vim.keycode(keys), "mtx", false)
+    return vim.api.nvim_buf_get_lines(ebuf, 0, -1, false)
+  end
+  eq_lines(typed({ "prose" }, "otwo<Esc>"), { "prose", "two" }, "native o runs before the keys after it")
+  eq_lines(typed({ "prose" }, "Oone<Esc>"), { "one", "prose" }, "native O runs before the keys after it")
+  eq_lines(typed({ "prose" }, "A<CR>two<Esc>"), { "prose", "two" }, "native <CR> runs before the keys after it")
+  eq_lines(typed({ "- one" }, "A<M-CR>two<Esc>"), { "- one", "two" }, "<M-CR> runs before the keys after it")
+  eq_lines(typed({ "zzq", "zzq" }, "+rX"), { "zzq", "Xzq" }, "native + runs before the keys after it")
+
   -- Leave no mapleader behind for the specs that follow in the same editor.
   vim.g.mapleader = orig_mapleader
 end

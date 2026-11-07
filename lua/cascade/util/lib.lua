@@ -121,12 +121,12 @@ function M.augroup(name)
 end
 
 ---@internal
---- Feed a native key sequence without remapping, queued to run once the
---- current mapping function returns.
+--- Feed a native key sequence without remapping, to run once the current
+--- mapping function returns, in front of whatever is already queued ("i").
 ---@param keys string
 ---@return nil
 local function feed(keys)
-  vim.api.nvim_feedkeys(M.keycode(keys), "n", false)
+  vim.api.nvim_feedkeys(M.keycode(keys), "ni", false)
 end
 
 ---@internal
@@ -464,7 +464,7 @@ function M.dotrepeat_run(fn)
   end
   _pending_dotrepeat_fn = fn
   vim.o.operatorfunc = "v:lua.require'cascade.util.lib'.dotrepeat_invoke"
-  vim.api.nvim_feedkeys("g@l", "n", false)
+  vim.api.nvim_feedkeys("g@l", "ni", false)
   set_vim_repeat()
 end
 
