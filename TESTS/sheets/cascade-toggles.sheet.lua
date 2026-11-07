@@ -1,0 +1,58 @@
+-- Live check: the quick toggles (task cascade.nvim/testblatt-bindings-checkliste; section 5 of
+-- ALL/manual-test-checklists/cascade.md).
+return {
+  id = "cascade.toggles",
+  title = "cascade.nvim: <A-->, <A-*>, <A-0>, <A-c>, <leader>cx, with a count and a selection",
+  task = "cascade.nvim/testblatt-bindings-checkliste",
+  steps = {
+    { lua = [[dofile(vim.fn.getcwd() .. "/TESTS/sheets/_helpers.lua"); _G.setup()]] },
+
+    { lua = [[_G.fresh("markdown", "plain")]] },
+    { keys = "<A-->" },
+    { expect = [[_G.text() == "- plain"]], note = "adds a bullet, no marker needed" },
+    { keys = "<A-->" },
+    { expect = [[_G.text() == "plain"]], note = "and removes it" },
+
+    { keys = "<A-*>" },
+    { expect = [[_G.text() == "* plain"]], note = "<A-*>" },
+    { keys = "<A-*>" },
+    { expect = [[_G.text() == "plain"]] },
+    { keys = "<A-0>" },
+    { expect = [[_G.text() == "1. plain"]], note = "<A-0>" },
+    { keys = "<A-0>" },
+    { expect = [[_G.text() == "plain"]] },
+    { keys = "<A-c>" },
+    { expect = [[_G.text() == "- [ ] plain"]], note = "<A-c>" },
+
+    { lua = [[_G.fresh("markdown", "a", "b", "c", "d")]] },
+    { keys = "3<A-->" },
+    { expect = [[_G.text() == "- a\n- b\n- c\nd"]], note = "the count widens the scope to 3 lines" },
+    { lua = [[_G.fresh("markdown", "a", "b", "c")]] },
+    { keys = "2<A-->" },
+    { expect = [[_G.text() == "- a\n- b\nc"]], note = "an even count is no no-op" },
+
+    { lua = [[_G.fresh("markdown", "a", "b", "c")]] },
+    { keys = "Vj<A-->" .. "<Esc>" },
+    { expect = [[_G.text() == "- a\n- b\nc"]], note = "Visual: every line by itself" },
+    { lua = [[_G.fresh("markdown", "- a", "b", "c")]] },
+    { keys = "Vj<A-->" .. "<Esc>" },
+    { expect = [[_G.text() == "a\n- b\nc"]], note = "each line decides its own fate, no shared marker" },
+    { lua = [[_G.fresh("markdown", "a", "b")]] },
+    { keys = "Vj<A-*><Esc>" },
+    { expect = [[_G.text() == "* a\n* b"]], note = "<A-*> in Visual mode" },
+    { lua = [[_G.fresh("markdown", "a", "b")]] },
+    { keys = "Vj<A-0><Esc>" },
+    { expect = [[_G.text() == "1. a\n2. b"]], note = "<A-0> in Visual mode" },
+    { lua = [[_G.fresh("markdown", "a", "b")]] },
+    { keys = "Vj<A-c><Esc>" },
+    { expect = [[_G.text() == "- [ ] a\n- [ ] b"]], note = "<A-c> in Visual mode" },
+
+    { lua = [[_G.fresh("markdown", "- [ ] task")]] },
+    { keys = "<leader>cx" },
+    { expect = [[_G.text() == "- [x] task"]], note = "<leader>cx: [ ] to [x]" },
+    { keys = "<leader>cx" },
+    { expect = [[_G.text() == "- [~] task"]], note = "the default cycle has a third state" },
+    { keys = "<leader>cx" },
+    { expect = [[_G.text() == "- [ ] task"]], note = "and closes" },
+  },
+}

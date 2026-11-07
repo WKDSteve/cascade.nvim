@@ -72,6 +72,16 @@ skip.
 | `lib_util_spec.lua`           | `cascade.util.lib`'s soft bridge to `lib.nvim` (notify/map/augroup), fallback and stubbed-present paths. |
 | `health_spec.lua`             | `:checkhealth cascade` against a captured `vim.health`: every domain branch, the config-sanity warnings, the cross-pack clash report, and the dependency-missing branch with lib.nvim made to fail its `require`. |
 
+## Test sheets
+
+`TESTS/sheets/*.sheet.lua` are the live checks of the manual checklist, written down as data
+([testing.nvim's SHEETS.md](https://github.com/WKDSteve/testing.nvim/blob/main/docs/SHEETS.md)) and run by
+`sheets_spec.lua` (dialect `busted`, one case `sheet:<id>` per sheet): the real keys and the real `:Cascade`
+typed into a child editor with the options of the real config (`sheets/_helpers.lua`), the real `ui.menu` with
+a real right click. Only `vim.ui.select` answers by itself. `cascade-strings-js` and `cascade-strings-python`
+need a Tree-sitter parser Neovim does not bundle: they use the one installed on the machine, and are a reported
+skip without one, which is what CI sees. What a sheet cannot do stands in its `manual` list.
+
 ## Adding a spec
 
 Create `<name>_spec.lua` returning `function(H) … end` (use `H.eq` / `H.eq_lines` /
