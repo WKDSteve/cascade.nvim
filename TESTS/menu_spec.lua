@@ -49,6 +49,31 @@ return function(H)
 
   cascade.setup({})
 
+  -- ---------- the key an entry shows follows keymaps.list ----------
+  do
+    local function key_of(needle)
+      local buf = vim.api.nvim_create_buf(false, true)
+      vim.bo[buf].filetype = "markdown"
+      for _, it in ipairs(menu.items(buf)) do
+        if it.name:find(needle, 1, true) then
+          return it.rtxt
+        end
+      end
+    end
+    cascade.setup({})
+    H.eq(key_of("Sort list"), "<leader>cs", "the default key")
+    cascade.setup({ keymaps = { list = { sort = "<leader>xs" } } })
+    H.eq(key_of("Sort list"), "<leader>xs", "a moved key")
+    H.eq(key_of("Reverse list"), "<leader>cv", "the others keep theirs")
+    cascade.setup({ keymaps = { list = { sort = { "<leader>y", "<leader>z" } } } })
+    H.eq(key_of("Sort list"), "<leader>y", "the first of several keys")
+    cascade.setup({ keymaps = { list = { sort = { lhs = "<leader>w", mode = "n" } } } })
+    H.eq(key_of("Sort list"), "<leader>w", "a key with its mode")
+    cascade.setup({ keymaps = { list = { sort = false } } })
+    H.eq(key_of("Sort list"), nil, "a key switched off shows none, the entry stays")
+    cascade.setup({})
+  end
+
   -- ---------- enabled(): what ui.nvim's ui.menu asks first ----------
 
   do

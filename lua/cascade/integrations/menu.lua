@@ -159,25 +159,51 @@ function M.items(bufnr)
     return feat[name] ~= false
   end
 
+  local user_keys = (require("cascade.config").get("keymaps") or {}).list
+  user_keys = type(user_keys) == "table" and user_keys or {}
+
+  --- The key an entry shows: what `keymaps.list` made of it, nothing for one switched off.
+  ---@param id string
+  ---@param default string
+  ---@return string|nil
+  local function hint(id, default)
+    local key = user_keys[id]
+    if key == nil then
+      return default
+    end
+    if type(key) == "table" then
+      key = key.lhs or key[1]
+    end
+    return type(key) == "string" and key or nil
+  end
+
   local api = require("cascade")
   local out = {}
 
   contextmenu.group(
     out,
-    contextmenu.entry(on("checkbox"), "  Toggle checkbox", api.toggle_checkbox, "<leader>cx"),
-    contextmenu.entry(on("cycle_type"), "  Cycle list marker type", api.cycle_type_next, "<leader>ct"),
-    contextmenu.entry(on("cycle_type"), "  Cycle list marker type back", api.cycle_type_prev, "<leader>cT")
+    contextmenu.entry(on("checkbox"), "  Toggle checkbox", api.toggle_checkbox, hint("toggle_checkbox", "<leader>cx")),
+    contextmenu.entry(on("cycle_type"), "  Cycle list marker type", api.cycle_type_next, hint("cycle_type_next", "<leader>ct")),
+    contextmenu.entry(
+      on("cycle_type"),
+      "  Cycle list marker type back",
+      api.cycle_type_prev,
+      hint("cycle_type_prev", "<leader>cT")
+    )
   )
 
   contextmenu.group(
     out,
-    contextmenu.entry(true, "  Renumber list", api.renumber, "<leader>cr"),
-    contextmenu.entry(on("rotate"), "  Rotate list form", api.rotate_form_next, "<leader>cl"),
-    contextmenu.entry(on("sort"), "  Sort list A-Z", api.sort, "<leader>cs"),
-    contextmenu.entry(on("reverse"), "  Reverse list order", api.reverse, "<leader>cv")
+    contextmenu.entry(true, "  Renumber list", api.renumber, hint("renumber", "<leader>cr")),
+    contextmenu.entry(on("rotate"), "  Rotate list form", api.rotate_form_next, hint("rotate_form_next", "<leader>cl")),
+    contextmenu.entry(on("sort"), "  Sort list A-Z", api.sort, hint("sort", "<leader>cs")),
+    contextmenu.entry(on("reverse"), "  Reverse list order", api.reverse, hint("reverse", "<leader>cv"))
   )
 
-  contextmenu.group(out, contextmenu.entry(on("strip"), "  Strip checkboxes", api.strip_checkbox, "<leader>cX"))
+  contextmenu.group(
+    out,
+    contextmenu.entry(on("strip"), "  Strip checkboxes", api.strip_checkbox, hint("strip_checkbox", "<leader>cX"))
+  )
 
   return out
 end
