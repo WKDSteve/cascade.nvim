@@ -78,7 +78,7 @@ skip.
 ([testing.nvim's SHEETS.md](https://github.com/WKDSteve/testing.nvim/blob/main/docs/SHEETS.md)) and run by
 `sheets_spec.lua` (dialect `busted`, one case `sheet:<id>` per sheet): the real keys and the real `:Cascade`
 typed into a child editor with the options of the real config (`sheets/_helpers.lua`), the real `ui.menu` with
-a real right click. Only `vim.ui.select` answers by itself. `cascade-strings-js` and `cascade-strings-python`
+a real right click, the real chooser of `ui.kit`. `cascade-strings-js` and `cascade-strings-python`
 need a Tree-sitter parser Neovim does not bundle: they use the one installed on the machine, and are a reported
 skip without one, which is what CI sees. What a sheet cannot do stands in its `manual` list.
 

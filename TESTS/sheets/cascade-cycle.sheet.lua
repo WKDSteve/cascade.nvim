@@ -75,6 +75,13 @@ return {
     { keys = "<leader>cY" },
     { expect = [[_G.text() == "cdt"]], note = "and <leader>cY" },
 
+    { lua = [[_G.fresh("lua", "true")]] },
+    { keys = "<leader>cP" },
+    { wait = [[vim.api.nvim_win_get_config(0).relative ~= ""]], note = "<leader>cP opens the themed chooser of ui.kit" },
+    { expect = [[_G.text():find("true", 1, true) and _G.text():find("false", 1, true)]], note = "it lists the group's values" },
+    { keys = "j<CR>" },
+    { wait = [[vim.api.nvim_win_get_config(0).relative == "" and _G.text() == "false"]], note = "and the pick lands" },
+
     {
       lua = [[_G.fresh("lua", "true")
       _G.asked = nil
@@ -82,10 +89,10 @@ return {
         _G.asked = items
         on_choice("false")
       end]],
-      note = "vim.ui.select answers by itself: the picker is a window nobody can press keys in here",
+      note = "a vim.ui.select someone registered, as telescope-ui-select does; it answers by itself",
     },
     { keys = "<leader>cP" },
-    { wait = [[_G.asked ~= nil]], note = "<leader>cP asks vim.ui.select" },
+    { wait = [[_G.asked ~= nil]], note = "<leader>cP respects it" },
     { expect = [[vim.deep_equal(_G.asked, { "true", "false" })]], note = "with the values of the group" },
     { expect = [[_G.text() == "false"]], note = "and the pick lands" },
     { expect = [[vim.fn.maparg("<leader>cp", "n") == ""]], note = "the default <leader>cp is free in this config" },
