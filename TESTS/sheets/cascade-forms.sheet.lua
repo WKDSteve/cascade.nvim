@@ -41,6 +41,12 @@ return {
     { keys = "<leader>cv" },
     { expect = [[_G.text() == "1. c\n2. b\n3. a"]], note = "<leader>cv reverses and renumbers" },
 
+    { lua = [[_G.fresh("markdown", "1. a", "2. b", "3. c")]] },
+    { keys = "jVj<leader>cl<Esc>" },
+    {
+      expect = [[_G.text() == "1. a\n2. [ ] b\n3. [ ] c"]],
+      note = "<leader>cl on a selection mid-list goes on from its first number",
+    },
     { lua = [[_G.fresh("markdown", "- [ ] a", "- [x] b", "1. [~] c")]] },
     { keys = "<leader>cX" },
     { expect = [[_G.text() == "- a\n- b\n1. c"]], note = "<leader>cX strips, the markers stay" },

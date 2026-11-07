@@ -26,6 +26,18 @@ return function(H)
   eq(lines[2], "2. b", "renumber l2")
   eq(lines[3], "3. c", "renumber l3")
 
+  -- form rotation on a selection mid-list goes on from its first number
+  do
+    local rotate = require("cascade.lists.transform").rotate
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "1. a", "2. b", "3. c" })
+    rotate(buf, 1, 2, 1, lopts)
+    eq(
+      table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), "|"),
+      "1. a|2. [ ] b|3. [ ] c",
+      "rotate: a selection keeps following the line above"
+    )
+  end
+
   -- form rotation: 1. -> 1. [ ] -> - [ ] -> -
   local transform = require("cascade.lists.transform")
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "1. one", "2. two", "3. three" })

@@ -235,7 +235,9 @@ function M.rotate(bufnr, srow, erow, dir, opts)
   local lines = vim.api.nvim_buf_get_lines(bufnr, srow, erow + 1, false)
   local out = {} ---@type string[]
   local changed = false
-  local counter = 1
+  -- A selection in the middle of a numbered list goes on from its first item's number, so the
+  -- result still follows the line above it.
+  local counter = tonumber(base.marker) or 1
   for i = 1, #lines do
     local l = lines[i]
     local m = marker.parse(l, opts)
