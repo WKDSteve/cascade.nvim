@@ -208,6 +208,10 @@ return function(H)
   -- ============================================================ Python
 
   if has_parser("python") then
+    -- The python ftplugin asks has('python3'), which starts a python3 process to
+    -- probe the provider wherever one is on PATH (every CI runner): the process
+    -- guard rejects that. The spec needs no provider.
+    vim.g.loaded_python3_provider = 0
     buf = buffer_with("python", 's = "hi {name}"', 8)
     eq(strings.python_fstring(buf), true, "py: {name} converts to an f-string")
     eq(line1(buf), 's = f"hi {name}"', "py: f prefix")
