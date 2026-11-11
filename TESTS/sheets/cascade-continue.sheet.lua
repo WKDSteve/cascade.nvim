@@ -2,6 +2,7 @@
 -- ALL/manual-test-checklists/cascade.md). The keys are typed in a real child editor; the buffer is the verdict.
 return {
   id = "cascade.continue",
+  feature = "cascade.list-continue",
   title = "cascade.nvim: <CR>, <M-CR>, o and O continue a list, only in a list filetype",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

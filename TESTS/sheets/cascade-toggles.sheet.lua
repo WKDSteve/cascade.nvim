@@ -2,6 +2,7 @@
 -- ALL/manual-test-checklists/cascade.md).
 return {
   id = "cascade.toggles",
+  feature = "cascade.list-toggles",
   title = "cascade.nvim: <A-->, <A-*>, <A-0>, <A-c>, <leader>cx, with a count and a selection",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

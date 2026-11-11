@@ -2,6 +2,7 @@
 -- cascade.nvim/testblatt-bindings-checkliste; section 12 of ALL/manual-test-checklists/cascade.md).
 return {
   id = "cascade.strings-gate",
+  feature = "cascade.strings",
   title = "cascade.nvim: no conversion in a .lua or Markdown file",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

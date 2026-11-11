@@ -3,6 +3,7 @@
 -- The keys are fed below the terminal's decoder: whether a terminal sends <C-S-y> at all is in `manual`.
 return {
   id = "cascade.shift",
+  feature = "cascade.list-step",
   title = "cascade.nvim: <C-y>, <C-x> on a marker, <C-S-y>, <leader>c+, letters, Roman numerals, bare markers",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

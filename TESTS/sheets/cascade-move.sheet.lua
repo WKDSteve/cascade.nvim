@@ -2,6 +2,7 @@
 -- ALL/manual-test-checklists/cascade.md, the bindings checklist's <A-Up>/<A-Down> in all three modes).
 return {
   id = "cascade.move",
+  feature = "cascade.list-move",
   title = "cascade.nvim: <A-Up> and <A-Down> move and renumber, with a count, a selection, in Insert mode",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

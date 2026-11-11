@@ -2,6 +2,7 @@
 -- cascade.nvim/testblatt-bindings-checkliste; section 8 of ALL/manual-test-checklists/cascade.md).
 return {
   id = "cascade.forms",
+  feature = "cascade.list-forms",
   title = "cascade.nvim: <leader>cl, <leader>cL, :Cascade! rotate, <leader>cS, <leader>cv, <leader>cX",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

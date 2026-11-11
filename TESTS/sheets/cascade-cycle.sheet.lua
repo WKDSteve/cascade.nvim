@@ -3,6 +3,7 @@
 -- The keys are fed below the terminal's decoder: whether a terminal sends <C-M-y> at all is a question for a person.
 return {
   id = "cascade.cycle",
+  feature = "cascade.cycle",
   title = "cascade.nvim: <C-y>, <C-x>, +, -, <C-M-y>, <leader>cP on words, numbers, dates and operators",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

@@ -3,6 +3,7 @@
 -- checklist's <leader>cR).
 return {
   id = "cascade.renumber",
+  feature = "cascade.list-renumber",
   title = "cascade.nvim: renumber on :w, <leader>cr, <leader>cR and :Cascade renumber all",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

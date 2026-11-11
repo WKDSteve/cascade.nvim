@@ -2,6 +2,7 @@
 -- ALL/manual-test-checklists/cascade.md). Neovim bundles the markdown parser, so this runs everywhere.
 return {
   id = "cascade.precision",
+  feature = "cascade.list-precision",
   title = 'cascade.nvim: lists.precision = "treesitter" skips a fenced block; no parser falls back',
   task = "cascade.nvim/manual-checklist-run",
   steps = {

@@ -2,6 +2,7 @@
 -- ALL/manual-test-checklists/cascade.md, the bindings checklist's <A-Right>/<A-Left> in Insert mode).
 return {
   id = "cascade.indent",
+  feature = "cascade.list-indent",
   title = "cascade.nvim: <A-Right>, <A-Left>, the count of lines against the count of levels",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

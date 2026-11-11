@@ -2,6 +2,7 @@
 -- ALL/manual-test-checklists/cascade.md, the bindings checklist's <leader><C-Left>).
 return {
   id = "cascade.transpose",
+  feature = "cascade.transpose",
   title = "cascade.nvim: <leader><Right>, <leader><Left>, <leader><C-Right>, <leader><C-Left>",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

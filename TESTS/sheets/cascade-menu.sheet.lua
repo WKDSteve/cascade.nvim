@@ -2,6 +2,7 @@
 -- cascade.nvim/testblatt-bindings-checkliste; section 11 of ALL/manual-test-checklists/cascade.md).
 return {
   id = "cascade.menu",
+  feature = "cascade.menu",
   title = "cascade.nvim: the Cascade fly-out in ui.menu fires the actions; absent in .lua and with ui_menu = false",
   task = "cascade.nvim/manual-checklist-run",
   steps = {

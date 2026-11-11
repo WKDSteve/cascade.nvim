@@ -2,6 +2,7 @@
 -- cascade.nvim/testblatt-bindings-checkliste; section 10 and the setup of ALL/manual-test-checklists/cascade.md).
 return {
   id = "cascade.features",
+  feature = "cascade.switches",
   title = "cascade.nvim: a switched-off feature refuses its action; :checkhealth reports the domains",
   task = "cascade.nvim/manual-checklist-run",
   steps = {
