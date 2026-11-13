@@ -18,7 +18,8 @@ bash scripts/test.sh --json ir.json   # also write the machine-readable result
 `scripts/test.sh` finds testing.nvim, lib.nvim and ui.nvim (`$<NAME>_DIR`,
 `.deps/<name>`, `../<name>`, `stdpath('data')/lazy/<name>`) and exits 1 naming
 all four places when one is missing. The specs are discovered, not listed; the
-configuration is `.testing.lua` (dialect `h`: the specs run on `TESTS/harness.lua`).
+configuration is `.testing.lua` (dialect `h`: the specs run on `TESTS/harness.lua`;
+only `sheets_spec.lua`, which runs the test sheets in `sheets/`, is busted style).
 
 The legacy runner still works (it is what `scripts/smoke.lua` wraps):
 

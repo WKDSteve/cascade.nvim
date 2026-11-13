@@ -5,9 +5,11 @@
 -- or:
 --   nvim -n -i NONE --headless -u NONE -c "set rtp+=." -l TESTS/run.lua
 --
--- Loads every *_spec.lua in this directory, runs it against the shared
--- harness, prints a per-spec result and exits non-zero on the first failing
--- spec (so it is CI-friendly).
+-- Legacy runner: the suite is run by testing.nvim (`bash scripts/test.sh`),
+-- which discovers the specs itself and reads the list below only as an order
+-- hint and for the sentinel. This file runs only the specs in that fixed list
+-- (not sheets_spec.lua, which is busted style), each against the shared
+-- harness, prints a per-spec result and exits non-zero if any spec failed.
 
 local dir = debug.getinfo(1, "S").source:sub(2):match("(.*[/\\])") or "./"
 local H = dofile(dir .. "harness.lua")

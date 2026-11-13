@@ -1,9 +1,10 @@
 -- Headless smoke test for cascade.nvim. Run with:
 --   nvim --headless -u NONE -c "set rtp+=." -c "luafile scripts/smoke.lua" -c "qa!"
 --
--- This is a thin entry point kept for backwards compatibility / CI. The actual
--- specs live in TESTS/ and are executed by testing.nvim (`bash scripts/test.sh`);
--- this entry point still wraps the legacy TESTS/run.lua. On success this
+-- This is a thin entry point kept for backwards compatibility only: no CI job
+-- calls it (CI runs `scripts/test.sh ci`). The actual specs live in TESTS/ and
+-- are executed by testing.nvim (`bash scripts/test.sh`); this entry point still
+-- wraps the legacy TESTS/run.lua. On success this
 -- prints CASCADE_SMOKE_OK; on failure the runner exits non-zero before we
 -- get here.
 
