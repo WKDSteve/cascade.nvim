@@ -82,3 +82,20 @@ each page answers.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+<!-- connections:begin (written by the app-icons tool of the workshop; change integrations.json there, not this block) -->
+## Connections
+
+![cascade.nvim: what it uses and what uses it](assets/graphs/cascade.nvim.png)
+
+**Uses**
+
+- [markdown.nvim](https://github.com/WKDSteve/markdown.nvim): In markdown buffers, cascade.nvim consults the table mode of markdown.nvim (`markdown.core.table_mode`) before it acts. ([picture](assets/graphs/pair/cascade.nvim--markdown.nvim.png))
+- [ui.nvim](https://github.com/WKDSteve/ui.nvim): cascade.nvim picks a value with `ui.kit.select` of ui.nvim when it is installed, and with `vim.ui.select` otherwise. ([picture](assets/graphs/pair/cascade.nvim--ui.nvim.png))
+- [lib.nvim](https://github.com/WKDSteve/lib.nvim): the shared base of the plugins.
+
+**Used by**
+
+- [emojis.nvim](https://github.com/WKDSteve/emojis.nvim): emojis.nvim hands out `cascade_groups()` that can feed the cycle groups of cascade.nvim; its health check says whether cascade.nvim is there. ([picture](assets/graphs/pair/emojis.nvim--cascade.nvim.png))
+- [tasks.nvim](https://github.com/WKDSteve/tasks.nvim): The task form of tasks.nvim cycles values with cascade.nvim when it is installed. ([picture](assets/graphs/pair/tasks.nvim--cascade.nvim.png))
+<!-- connections:end -->
