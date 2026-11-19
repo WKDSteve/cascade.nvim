@@ -2,6 +2,8 @@
 -- says which ones have a feature sheet (`feature = "<id>"`) and in which state, and K16 warns about a sheet that names
 -- an id not listed here. Data: read with an empty environment like a sheet (testing.nvim docs/SHEETS.md).
 -- The list follows docs/FEATURES/ (README.md and its five domains) and ALL/manual-test-checklists/cascade.md.
+-- cascade.nvim starts no process (no vim.system, jobstart, system() or terminal, none through lib.nvim either), so
+-- `testing perf` finds no start site; every functionality has its own sheet all the same, which measures its time.
 return {
   {
     id = "cascade.list-continue",
