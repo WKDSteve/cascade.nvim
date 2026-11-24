@@ -39,6 +39,7 @@ local specs = {
   "menu_spec.lua",
   "lib_util_spec.lua",
   "health_spec.lua",
+  "config_unknown_spec.lua",
 }
 
 local failed = 0
