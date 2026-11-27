@@ -158,7 +158,7 @@ compose these entries into its own menu for them to ever be shown:
 
 ```lua
 local items = require("cascade.integrations.menu").items()  -- current buffer
-local sub = require("cascade.integrations.menu").submenu()  -- { name = "  Cascade", items = {…} } | nil
+local sub = require("cascade.integrations.menu").submenu()  -- { name = "Cascade", items = {…} } | nil
 ```
 
 ## User Commands

@@ -232,7 +232,16 @@ return function(H)
     local sub = menu.submenu(nil, b)
     ok(sub ~= nil, "menu.submenu: built for a configured buffer")
     ok(type(sub.items) == "table" and #sub.items > 0, "menu.submenu: carries the entries")
-    eq(sub.name, "  Cascade", "menu.submenu: the default label")
+    eq(sub.name, "Cascade", "menu.submenu: the default label")
+    ok(type(sub.icon) == "string" and sub.icon ~= "", "menu.submenu: the fly-out has an icon")
+    -- The glyph goes in the icon column, never into the label: a label that starts with
+    -- spaces indents its row past every other one.
+    for _, it in ipairs(sub.items) do
+      if it.name ~= "separator" then
+        ok(not it.name:match("^%s"), "menu.items: no leading blank in " .. it.name)
+        ok(type(it.icon) == "string" and it.icon ~= "", "menu.items: an icon for " .. it.name)
+      end
+    end
 
     local named = menu.submenu("My Lists", b)
     eq(named.name, "My Lists", "menu.submenu: an explicit label is used")
@@ -333,7 +342,7 @@ return function(H)
 
     local sub = menu_fallback.submenu(nil, b)
     ok(sub ~= nil, "menu (fallback): submenu still builds")
-    eq(sub.name, "  Cascade", "menu (fallback): submenu default label matches the real one")
+    eq(sub.name, "Cascade", "menu (fallback): submenu default label matches the real one")
   end
 
   cascade.setup({})

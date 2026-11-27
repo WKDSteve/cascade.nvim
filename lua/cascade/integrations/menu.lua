@@ -101,7 +101,25 @@ if not ok_cm then
   }
 end
 
+local nerd = require("lib.nvim.ui.nerd_font")
+
 local M = {}
+
+---@internal
+--- One glyph per entry, drawn in the renderer's icon column (`opts.icon`), never
+--- in the label: a label that starts with spaces or a glyph indents its row past
+--- every other one. ASCII fallback without a declared Nerd Font.
+---@type table<string, string>
+local ICON = {
+  checkbox = nerd.glyph("F0C52", "x"), -- checkbox-marked-outline
+  cycle = nerd.glyph("F0C60", "t"), -- format-list-bulleted
+  renumber = nerd.glyph("F027B", "1"), -- format-list-numbered
+  rotate = nerd.glyph("F0BB1", "r"), -- swap-horizontal
+  sort = nerd.glyph("F04BA", "s"), -- sort
+  reverse = nerd.glyph("F04E2", "v"), -- swap-vertical
+  strip = nerd.glyph("F0131", "-"), -- checkbox-blank-outline
+  cascade = nerd.glyph("F0C60", "c"), -- format-list-bulleted
+}
 
 ---@internal
 --- Whether `ft` is in `fts` (nil `fts` means "every filetype", matching
@@ -192,27 +210,52 @@ function M.items(bufnr)
 
   contextmenu.group(
     out,
-    contextmenu.entry(on("checkbox"), "  Toggle checkbox", api.toggle_checkbox, hint("toggle_checkbox", "<leader>cx")),
-    contextmenu.entry(on("cycle_type"), "  Cycle list marker type", api.cycle_type_next, hint("cycle_type_next", "<leader>ct")),
+    contextmenu.entry(
+      on("checkbox"),
+      "Toggle checkbox",
+      api.toggle_checkbox,
+      hint("toggle_checkbox", "<leader>cx"),
+      { icon = ICON.checkbox }
+    ),
     contextmenu.entry(
       on("cycle_type"),
-      "  Cycle list marker type back",
+      "Cycle list marker type",
+      api.cycle_type_next,
+      hint("cycle_type_next", "<leader>ct"),
+      { icon = ICON.cycle }
+    ),
+    contextmenu.entry(
+      on("cycle_type"),
+      "Cycle list marker type back",
       api.cycle_type_prev,
-      hint("cycle_type_prev", "<leader>cT")
+      hint("cycle_type_prev", "<leader>cT"),
+      { icon = ICON.cycle }
     )
   )
 
   contextmenu.group(
     out,
-    contextmenu.entry(true, "  Renumber list", api.renumber, hint("renumber", "<leader>cr")),
-    contextmenu.entry(on("rotate"), "  Rotate list form", api.rotate_form_next, hint("rotate_form_next", "<leader>cl")),
-    contextmenu.entry(on("sort"), "  Sort list A-Z", api.sort, hint("sort", "<leader>cs")),
-    contextmenu.entry(on("reverse"), "  Reverse list order", api.reverse, hint("reverse", "<leader>cv"))
+    contextmenu.entry(true, "Renumber list", api.renumber, hint("renumber", "<leader>cr"), { icon = ICON.renumber }),
+    contextmenu.entry(
+      on("rotate"),
+      "Rotate list form",
+      api.rotate_form_next,
+      hint("rotate_form_next", "<leader>cl"),
+      { icon = ICON.rotate }
+    ),
+    contextmenu.entry(on("sort"), "Sort list A-Z", api.sort, hint("sort", "<leader>cs"), { icon = ICON.sort }),
+    contextmenu.entry(on("reverse"), "Reverse list order", api.reverse, hint("reverse", "<leader>cv"), { icon = ICON.reverse })
   )
 
   contextmenu.group(
     out,
-    contextmenu.entry(on("strip"), "  Strip checkboxes", api.strip_checkbox, hint("strip_checkbox", "<leader>cX"))
+    contextmenu.entry(
+      on("strip"),
+      "Strip checkboxes",
+      api.strip_checkbox,
+      hint("strip_checkbox", "<leader>cX"),
+      { icon = ICON.strip }
+    )
   )
 
   return out
@@ -221,11 +264,11 @@ end
 --- Convenience: the cascade.nvim entries wrapped as a single nested submenu
 --- entry, for hosts that prefer a "Cascade ▸" fly-out instead of inline
 --- entries. Returns nil when there is nothing to show.
----@param label? string submenu label (default "  Cascade")
+---@param label? string submenu label (default "Cascade")
 ---@param bufnr? integer
 ---@return Ui.ContextMenu.Item|nil
 function M.submenu(label, bufnr)
-  return contextmenu.submenu(label or "  Cascade", M.items(bufnr))
+  return contextmenu.submenu(label or "Cascade", M.items(bufnr), { icon = ICON.cascade })
 end
 
 return M
