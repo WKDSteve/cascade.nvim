@@ -464,15 +464,18 @@ return function(H)
   -- ---------- strings domain: every configured filetype, not four hardcoded ----------
 
   do
-    -- "vue" is not part of the four the check used to hardcode
-    -- (javascript/typescript/python/lua), and has no parser installed in
-    -- this test environment -- regression for the health check reporting
+    -- "cascade_noparser" is not part of the four the check used to hardcode
+    -- (javascript/typescript/python/lua), and no parser of that name exists
+    -- on any machine (a real filetype such as "vue" has one on some) -- regression for the health check reporting
     -- a clean bill of health for a filetype it never actually looked at.
     cfg.setup({
-      strings = { features = { template = true, fstring = false, lua_format = false }, template_filetypes = { "vue" } },
+      strings = {
+        features = { template = true, fstring = false, lua_format = false },
+        template_filetypes = { "cascade_noparser" },
+      },
     })
     local r = capture()
-    ok(has(r.info, "vue"), "health: reports a missing parser for a non-hardcoded filetype")
+    ok(has(r.info, "cascade_noparser"), "health: reports a missing parser for a non-hardcoded filetype")
     cfg.setup({
       strings = { features = { template = true, fstring = false, lua_format = false }, template_filetypes = { "lua" } },
     })
