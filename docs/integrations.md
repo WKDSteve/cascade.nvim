@@ -17,8 +17,7 @@ markdown.nvim for the exact row it lands on.
 
 ## Context menu
 
-`cascade.integrations.menu` contributes context-aware entries in the shape
-[nvzone/menu](https://github.com/nvzone/menu) expects. cascade.nvim has **no**
+`cascade.integrations.menu` contributes context-aware entries in the context-menu entry shape. cascade.nvim has **no**
 dependency on `menu` and never opens a context menu itself; a host — typically
 your own `<RightMouse>` dispatcher — composes these entries into its own menu:
 

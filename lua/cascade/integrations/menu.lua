@@ -1,8 +1,8 @@
 ---@module 'cascade.integrations.menu'
----@brief Context-aware menu entries for nvzone/menu (soft, opt-in integration).
+---@brief Context-aware menu entries (soft, opt-in integration).
 ---@description
 --- cascade.nvim does not depend on a menu plugin. It *provides* a list of
---- entries in the shape nvzone/menu expects, built with
+--- entries in the context-menu entry shape, built with
 --- `ui.contextmenu`'s helpers, and a host — typically the user's own
 --- RightMouse dispatcher — composes them into its own menu for the current
 --- buffer, e.g.:
@@ -23,7 +23,7 @@
 --- at all, cycle.pick falls back to plain vim.ui.select directly" is the
 --- promise for the *other* ui.nvim integration, and this one holds it too
 --- (LUA-01) — `entry`/`group`/`submenu` are pure item-table builders with no
---- renderer/nvzone dependency of their own (see ui.nvim's own doc comment:
+--- renderer dependency of their own (see ui.nvim's own doc comment:
 --- "the item builders ... are unconditional and always available"), so the
 --- fallback below reproduces them verbatim instead of erroring. Only these
 --- three are used here; `contextmenu.open`/`bind_buffer` (which do need a

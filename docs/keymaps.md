@@ -142,7 +142,7 @@ the same for every action:
 
 `cascade.integrations.menu` contributes the normal-mode list actions
 (checkbox, cycle type, renumber, rotate, sort, reverse, strip) as entries in
-the shape [nvzone/menu](https://github.com/nvzone/menu) expects, gated the
+the context-menu entry shape, gated the
 same way the keymaps are. cascade has no dependency on `menu` and never opens
 a context menu itself — see
 [`BINDINGS.md`](BINDINGS.md#context-menu-optional) for wiring it into a

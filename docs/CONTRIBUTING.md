@@ -39,7 +39,7 @@ require("cascade").setup({ keymaps = { preset = true } })
 | `lua/cascade/transpose/` | Character, word and selection swapping |
 | `lua/cascade/bindings/` | The `:Cascade` route tree and the opt-in keymap preset |
 | `lua/cascade/config/` | Defaults and `setup()` validation |
-| `lua/cascade/integrations/` | Soft-dependency bridges (nvzone/menu) |
+| `lua/cascade/integrations/` | Soft-dependency bridges (context-menu entries) |
 | `lua/cascade/core/`, `util/` | Shared line and UTF-8 helpers |
 | `docs/` | Everything the README links to |
 | `TESTS/` | The spec suite, mirroring `lua/cascade/`'s paths |

@@ -55,7 +55,7 @@ cascade.nvim/
     transpose/            -- char, word
     strings/init.lua      -- literal kind: template string, f-string, (…):format()
                              (Tree-sitter, from an autocmd; the one insert-side domain)
-    integrations/menu.lua -- nvzone/menu entries, no dependency on it
+    integrations/menu.lua -- context-menu entries, no menu dependency
     bindings/             -- keymaps, usrcmds (:Cascade), autocmds
     util/
       lib.lua             -- the guarded lib.nvim bridge

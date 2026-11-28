@@ -148,7 +148,7 @@ Buffer-local, bound per `lists.filetypes`.
 `cascade.integrations.menu` contributes the normal-mode subset of the
 buffer-local keymaps above (Toggle checkbox, Cycle list marker type,
 Renumber, Rotate list form, Sort A-Z, Reverse order, Strip checkboxes) as
-entries in the shape [nvzone/menu](https://github.com/nvzone/menu) expects.
+entries in the context-menu entry shape.
 Same gating as the keymaps: `lists.enable`, the buffer's filetype being in
 `lists.filetypes`, and each `lists.features.*` flag.
 
